@@ -334,12 +334,34 @@ select {
     const endTimeStr = "{{ user.end_date.strftime('%Y-%m-%dT%H:%M:%S') }}";
     const endTime = new Date(endTimeStr);
   
+    function disableMonitoringButtons() {
+      const buttons = document.querySelectorAll('.monitoring-btn');
+      buttons.forEach(btn => {
+        btn.disabled = true;
+        btn.style.pointerEvents = "none";
+        btn.style.opacity = "0.5";
+        btn.textContent = "Expired";
+      });
+    }
+  
+    function enableMonitoringButtons() {
+      const buttons = document.querySelectorAll('.monitoring-btn');
+      buttons.forEach(btn => {
+        btn.disabled = false;
+        btn.style.pointerEvents = "auto";
+        btn.style.opacity = "1";
+        btn.textContent = "Start Monitoring";
+      });
+    }
+  
     function updateCountdown() {
       const now = new Date();
       const diff = endTime - now;
   
       if (diff <= 0) {
-        document.getElementById("countdown").textContent = "⏰ Time's up!";
+        document.getElementById("countdown").textContent = 
+          "⏰ Subscription time is up! Your monitoring system will no longer work. Please activate your preferred subscription plan now—send a message on WhatsApp: 01737-226404";
+        disableMonitoringButtons();
         return;
       }
   
@@ -350,10 +372,12 @@ select {
   
       document.getElementById("countdown").textContent =
         `⏳ ${days} days ${hours} hrs ${minutes} mins ${seconds} secs left`;
+  
+      enableMonitoringButtons();
     }
   
     updateCountdown();
     setInterval(updateCountdown, 1000);
-  </script>
+  </script>  
   
 {% endblock %}

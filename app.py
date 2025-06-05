@@ -19,7 +19,7 @@ trigger_audio = {"b1": False, "b2": False, "kolkata_b1": False}
 
 TARGET_URLS = {
     "b1": "https://www.goethe.de/ins/bd/en/spr/prf/gzb1.cfm",
-    "b2": "https://www.goethe.de/ins/in/en/sta/kol/prf/gzb2.cfm",
+    "b2": "https://www.goethe.de/ins/bd/en/spr/prf/gzb2.cfm",
     "kolkata_b1": "https://www.goethe.de/ins/in/en/sta/kol/prf/gzb1.cfm"
 }
 
