@@ -14,13 +14,15 @@ app.secret_key = "f8a1d5b65cc9473d931b407ec8e8573b"
 
 TRIGGER_TEXTS = ["Select Module", "Select module", "select module", "SELECT MODULES"]
 
-watching = {"b1": False, "b2": False}
-trigger_audio = {"b1": False, "b2": False}
+watching = {"b1": False, "b2": False, "kolkata_b1": False}
+trigger_audio = {"b1": False, "b2": False, "kolkata_b1": False}
 
 TARGET_URLS = {
     "b1": "https://www.goethe.de/ins/bd/en/spr/prf/gzb1.cfm",
-    "b2": "https://www.goethe.de/ins/in/en/sta/kol/prf/gzb1.cfm"
+    "b2": "https://www.goethe.de/ins/in/en/sta/kol/prf/gzb2.cfm",
+    "kolkata_b1": "https://www.goethe.de/ins/in/en/sta/kol/prf/gzb1.cfm"
 }
+
 
 ALARM_LIST = [
     ("1-Morning.mp3", "Morning"),
@@ -54,13 +56,6 @@ def click_screen_center():
         pyautogui.click(x, y)
         time.sleep(0.1)  # শুধু 0.1 সেকেন্ড বিরতি
 
-# def click_screen_center():
-#     time.sleep(1)
-#     screenWidth, screenHeight = pyautogui.size()
-#     x, y = screenWidth // 2, screenHeight // 2
-#     for i in range(3):
-#         pyautogui.click(x, y)
-#         time.sleep(1)
 
 def check_condition_and_open(level):
     global watching, trigger_audio
@@ -140,11 +135,8 @@ def admin_create_user():
 
 
 
-
-
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-    # যদি ইউজার সেশন একটিভ থাকে, তখন সরাসরি ড্যাশবোর্ডে পাঠিয়ে দিন
     if 'email' in session:
         return redirect(url_for('dashboard'))
 
@@ -196,8 +188,6 @@ def login():
 
 
 
-
-
 @app.route('/dashboard')
 def dashboard():
     if 'email' not in session:
@@ -217,14 +207,9 @@ def dashboard():
         user=user
     )
 
-# @app.route('/logout')
-# def logout():
-#     session.pop('user', None)
-#     return redirect(url_for('home'))
-
 @app.route('/logout')
 def logout():
-    session.clear()  # সব সেশন ডেটা রিমুভ করে
+    session.clear() 
     return redirect(url_for('home'))
 
 
@@ -236,22 +221,16 @@ def set_alarm():
         session['alarm_file'] = selected_alarm
     return redirect(url_for('dashboard'))
 
-# @app.route('/start-watch/<level>')
-# def start_watch(level):
-#     if level in watching and not watching[level]:
-#         watching[level] = True
-#         trigger_audio[level] = False
-#         threading.Thread(target=check_condition_and_open, args=(level,)).start()
-#         # return f"Searching for {level.upper()} select module"
-#         return f"Searching for {level.upper()} 'Select Module'"
-#     return "Invalid or already watching."
+
 
 @app.route('/start-watch/<level>') 
 def start_watch(level): 
-    if level in watching and not watching[level]: 
-        watching[level] = True 
-        trigger_audio[level] = False 
-        threading.Thread(target=check_condition_and_open, args=(level,)).start()
+    normalized_level = level.replace("-", "_")  # হাইফেনকে আন্ডারস্কোরে বদলে দিলাম
+    
+    if normalized_level in watching and not watching[normalized_level]: 
+        watching[normalized_level] = True 
+        trigger_audio[normalized_level] = False 
+        threading.Thread(target=check_condition_and_open, args=(normalized_level,)).start()
 
         return f"""
         <html>
@@ -275,7 +254,7 @@ def start_watch(level):
                         text-align: center;
                         box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
                     }}
-                    .message-box h2{{
+                    .message-box h2 {{
                         color: #4CAF50;
                     }}
                     .monitoring-page {{ 
@@ -300,9 +279,9 @@ def start_watch(level):
             </head>
             <body>
                 <div class="message-box">
-                    <h2>Monitoring {level.upper()} level for 'Select Module'</h2>
+                    <h2>Monitoring {normalized_level.upper()} level for 'Select Module'</h2>
                     <p class="monitoring-page">Don't worry! Page changes won’t interrupt your monitoring.</p>
-                     <p style="text-align: justify; margin-top: 0;">
+                    <p style="text-align: justify; margin-top: 0;">
                         When 'Select Module' appears, your alarm will sound and the registration page will open within 5 seconds. If your internet is slow, it may take up to 12 seconds for the alarm and page to load.
                     </p> 
                     <a href="/dashboard" class="back-button">← Back to Dashboard</a>
