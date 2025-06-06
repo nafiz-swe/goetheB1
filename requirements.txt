@@ -1,6 +1,5 @@
 flask
 selenium
 mysql-connector-python
-pyautogui
 
 
