@@ -1,19 +1,25 @@
-from flask import Flask, render_template, request, redirect, url_for, session, jsonify
+from flask import Flask, render_template, request, redirect, url_for, session, jsonify, make_response
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 import threading
 import time
 import webbrowser
-import pyautogui
 import mysql.connector
 import uuid
-from flask import make_response
+import os
+
+# Try importing pyautogui safely
+try:
+    import pyautogui
+    PYAUTO_AVAILABLE = True
+except Exception as e:
+    print(f"⚠️ pyautogui could not be loaded: {e}")
+    PYAUTO_AVAILABLE = False
 
 app = Flask(__name__)
 app.secret_key = "f8a1d5b65cc9473d931b407ec8e8573b"
 
 TRIGGER_TEXTS = ["Select Module", "Select module", "select module", "SELECT MODULES"]
-
 watching = {"b1": False, "b2": False, "kolkata_b1": False}
 trigger_audio = {"b1": False, "b2": False, "kolkata_b1": False}
 
@@ -22,7 +28,6 @@ TARGET_URLS = {
     "b2": "https://www.goethe.de/ins/bd/en/spr/prf/gzb2.cfm",
     "kolkata_b1": "https://www.goethe.de/ins/in/en/sta/kol/prf/gzb1.cfm"
 }
-
 
 ALARM_LIST = [
     ("1-Morning.mp3", "Morning"),
@@ -38,31 +43,36 @@ ALARM_LIST = [
 def get_db_connection():
     return mysql.connector.connect(
         host="localhost",
-        user="root",         # আপনার DB username
-        password="",         # আপনার DB password
+        user="root",
+        password="",
         database="goethe_alarm_db"
     )
 
 def get_device_id():
     device_id = request.cookies.get("device_id")
     if not device_id:
-        device_id = str(uuid.uuid4())  # নতুন random device_id
+        device_id = str(uuid.uuid4())
     return device_id
 
 def click_screen_center():
-    screenWidth, screenHeight = pyautogui.size()
-    x, y = screenWidth // 2, screenHeight // 2
-    for i in range(3):
-        pyautogui.click(x, y)
-        time.sleep(0.1)  # শুধু 0.1 সেকেন্ড বিরতি
-
+    if PYAUTO_AVAILABLE:
+        try:
+            screenWidth, screenHeight = pyautogui.size()
+            x, y = screenWidth // 2, screenHeight // 2
+            for i in range(3):
+                pyautogui.click(x, y)
+                time.sleep(0.1)
+        except Exception as e:
+            print(f"⚠️ pyautogui error during click: {e}")
+    else:
+        print("ℹ️ pyautogui not available; skipping screen click.")
 
 def check_condition_and_open(level):
     global watching, trigger_audio
     options = Options()
     options.add_argument("--headless=new")
     options.add_argument("--disable-gpu")
-    options.add_argument("--blink-settings=imagesEnabled=false")  # Images disabled for faster load
+    options.add_argument("--blink-settings=imagesEnabled=false")
     driver = webdriver.Chrome(options=options)
 
     while watching[level]:
@@ -85,8 +95,6 @@ def check_condition_and_open(level):
         time.sleep(1)
 
     driver.quit()
-
-
 
 
 @app.route('/')
