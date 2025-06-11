@@ -1,7 +1,7 @@
 # checker.py
 import requests
 
-CONDITIONS = ['Select modules', 'Select Modules', 'select modules', 'SELECT MODULES']
+CONDITIONS = ['Select modules', 's', 'select modules', 'SELECT MODULES']
 
 def check_goethe_page(url):
     try:

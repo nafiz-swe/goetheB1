@@ -1,3 +1,15 @@
+# from flask import Flask
+# app = Flask(__name__)
+
+# @app.route('/')
+# def home():
+#     return "Hello from EuroZoom!"
+
+# if __name__ == '__main__':
+#     app.run(host="0.0.0.0", debug=True)
+
+
+
 from flask import Flask, render_template, request, redirect, url_for, session, jsonify, make_response
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
@@ -19,7 +31,7 @@ except Exception as e:
 app = Flask(__name__)
 app.secret_key = "f8a1d5b65cc9473d931b407ec8e8573b"
 
-TRIGGER_TEXTS = ["Select Module", "Select module", "select module", "SELECT MODULES"]
+TRIGGER_TEXTS = ["Select Modules", "Select modules", "select modules", "SELECT MODULES"]
 watching = {"b1": False, "b2": False, "kolkata_b1": False}
 trigger_audio = {"b1": False, "b2": False, "kolkata_b1": False}
 
@@ -40,14 +52,27 @@ ALARM_LIST = [
     ("8-kgf.mp3", "KGF Theme")
 ]
 
+# def get_db_connection():
+#     return mysql.connector.connect(
+#         host="localhost",
+#         user="root",
+#         password="",
+#         database="goethe_alarm_db"
+#     )
+# def get_db_connection():
+#     return mysql.connector.connect(
+#         host="localhost",
+#         user="eurozoom",
+#         password="EuroZoom@480",
+#         database="goethealarm"
+#     )
 def get_db_connection():
     return mysql.connector.connect(
-        host="localhost",
-        user="root",
-        password="",
-        database="goethe_alarm_db"
+        host="46.250.238.67",
+        user="eurozoom",
+        password="EuroZoom@480", 
+        database="goethealarm"
     )
-
 def get_device_id():
     device_id = request.cookies.get("device_id")
     if not device_id:
@@ -81,13 +106,14 @@ def check_condition_and_open(level):
             time.sleep(1)
             body_text = driver.page_source
 
+
             if any(text in body_text for text in TRIGGER_TEXTS):
                 webbrowser.open_new_tab(TARGET_URLS[level])
                 webbrowser.open_new_tab("http://127.0.0.1:5000/alarm")
                 trigger_audio[level] = True
                 watching[level] = False
                 click_screen_center()
-                print(f"✅ {level.upper()} - Select Module Found!")
+                print(f"✅ {level.upper()} - Select Modules Found!")
             else:
                 print(f"❌ {level.upper()} - Not found.")
         except Exception as e:
@@ -265,6 +291,15 @@ def start_watch(level):
                     .message-box h2 {{
                         color: #4CAF50;
                     }}
+                    .message-box p span {{
+                        font-size: 0.85em;
+                        margin-bottom: 0.625rem;
+                        margin-top: 0;
+                        background-color: #a0c814;
+                        color: #0e2029;
+                        padding: 1px 5px;
+                        font-weight: 600;
+                    }}
                     .monitoring-page {{ 
                         font-weight: bold;
                         text-align: center;
@@ -287,10 +322,10 @@ def start_watch(level):
             </head>
             <body>
                 <div class="message-box">
-                    <h2>Monitoring {normalized_level.upper()} level for 'Select Module'</h2>
-                    <p class="monitoring-page">Don't worry! Page changes won’t interrupt your monitoring.</p>
+                    <h2>⚡ প্রস্তুত থাকুন! {normalized_level.upper()} জন্য মনিটরিং চালু হয়েছে।</h2>
+                    <p class="monitoring-page">ভয়নেই! আপনি ল্যাপটপ বা কম্পিউটারে মনিটরিং চালু রেখেও অন্যান্য কাজ করতে পারবেন।</p>
                     <p style="text-align: justify; margin-top: 0;">
-                        When 'Select Module' appears, your alarm will sound and the registration page will open within 5 seconds. If your internet is slow, it may take up to 12 seconds for the alarm and page to load.
+                        যখন <span>SELECT MODULES</span> অপশন দৃশ্যমান হবে, তখন ৫ সেকেন্ডের মধ্যেই অটোমেটিক ভাবে অ্যালার্ম বেজে উঠবে এবং রেজিস্ট্রেশনের পেজ ওপেন হবে। অন্যদের তুলনায় আপনি তখন খুব দ্রুত মডিউল সিলেক্ট করে রেজিস্ট্রেশন সম্পন্ন করতে পারবেন, ইন শা আল্লাহ।
                     </p> 
                     <a href="/dashboard" class="back-button">← Back to Dashboard</a>
                 </div>
@@ -356,4 +391,4 @@ def check_audio(level):
     return jsonify({"play": False})
 
 if __name__ == '__main__':
-    app.run(debug=False)
+    app.run(host="0.0.0.0", debug=True)
