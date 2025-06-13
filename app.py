@@ -59,13 +59,6 @@ ALARM_LIST = [
 #         password="",
 #         database="goethe_alarm_db"
 #     )
-# def get_db_connection():
-#     return mysql.connector.connect(
-#         host="localhost",
-#         user="eurozoom",
-#         password="EuroZoom@480",
-#         database="goethealarm"
-#     )
 def get_db_connection():
     return mysql.connector.connect(
         host="46.250.238.67",
@@ -73,6 +66,14 @@ def get_db_connection():
         password="EuroZoom@480", 
         database="goethealarm"
     )
+# def get_db_connection():
+#     return mysql.connector.connect(
+#         host="localhost",
+#         user="eurozoom",
+#         password="EuroZoom@480",
+#         database="goethealarm"
+#     )
+
 def get_device_id():
     device_id = request.cookies.get("device_id")
     if not device_id:
@@ -142,7 +143,7 @@ def admin_create_user():
         email = request.form['email']
         phone = request.form['phone']
         subscription = request.form['subscription']  # নতুন subscription ইনপুট নিচ্ছি
-        plan_days = int(request.form['plan_days'])
+        plan_days = request.form['plan_days']
         amount = float(request.form['amount'])
         start_date = request.form['start_date']
         end_date = request.form['end_date']

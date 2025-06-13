@@ -5,9 +5,13 @@
 
 <div class="admin-container">
     <h2>Create User Account</h2>
+
     {% if message %}
-        <p>{{ message }}</p>
+    <div style="background-color: #e0ffe0; color: #006400; padding: 10px; border-radius: 5px; margin-bottom: 15px; border: 1px solid #006400;">
+        {{ message }}
+    </div>
     {% endif %}
+
     <form method="POST">
         <label>Full Name:</label>
         <input type="text" name="full_name" required>
