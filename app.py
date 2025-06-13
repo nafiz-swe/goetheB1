@@ -52,20 +52,20 @@ ALARM_LIST = [
     ("8-kgf.mp3", "KGF Theme")
 ]
 
-# def get_db_connection():
-#     return mysql.connector.connect(
-#         host="localhost",
-#         user="root",
-#         password="",
-#         database="goethe_alarm_db"
-#     )
 def get_db_connection():
     return mysql.connector.connect(
-        host="46.250.238.67",
-        user="eurozoom",
-        password="EuroZoom@480", 
-        database="goethealarm"
+        host="localhost",
+        user="root",
+        password="",
+        database="goethe_alarm_db"
     )
+# def get_db_connection():
+#     return mysql.connector.connect(
+#         host="46.250.238.67",
+#         user="eurozoom",
+#         password="EuroZoom@480", 
+#         database="goethealarm"
+#     )
 # def get_db_connection():
 #     return mysql.connector.connect(
 #         host="localhost",

@@ -37,33 +37,60 @@ h1 {
 .stats-cards {
   display: flex;
   justify-content: center;
+  flex-wrap: wrap;
   gap: 2rem;
-  margin: 1rem 0 4rem 0;
+  padding: 0 2rem;
+  margin: 2rem auto 4rem auto;
+  max-width: 1200px;
 }
+
 .stat-card {
   background-color: #f3f3f3;
-  border-radius: 0.5rem;
-  padding: 0.5rem 1rem;
-  width: 120px;
-  height: 70px;
+  border-left: 5px solid #00a6f4;
+  padding: .2rem 1rem;
+  width: 180px;
+  height: 90px;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
-  box-shadow: 0 0 5px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  background: white;
 }
+
+.stat-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+}
+
 .stat-number {
-  font-size: 1.5rem;
+  font-size: 1.6rem;
   font-weight: 700;
   color: #004a8d;
-  line-height: 1;
+  line-height: 1.2;
 }
+
 .stat-title {
-  font-size: 0.75rem;
+  font-size: 1rem;
   font-weight: 500;
-  color: #666;
-  margin-top: 0.2rem;
-  text-align: center;
+  color: #444;
+  margin-top: 0.4rem;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .stats-cards {
+    flex-direction: column;
+    align-items: center;
+    padding: 0 1rem;
+  }
+
+  .stat-card {
+    width: 90%;
+    margin-bottom: 1rem;
+    align-items: flex-start;
+  }
 }
 /* Status Card End */
 
@@ -237,6 +264,7 @@ main {
   line-height: 1.6;
   margin-top: 0.5rem;
 }
+.card-free,
 .card-basic,
 .card-standard,
 .card-advanced,
@@ -252,6 +280,7 @@ main {
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   padding: 0;
 }
+.btn-free,
 .btn-basic,
 .btn-standard,
 .btn-advanced,
@@ -266,6 +295,7 @@ main {
   text-decoration: none;
   color: white;
 }
+.card-free:hover,
 .card-basic:hover,
 .card-standard:hover,
 .card-advanced:hover,
@@ -284,6 +314,10 @@ main {
 }
 .card-header h1 {
   color: #fff;
+}
+.header-free,
+.btn-free {
+  background: linear-gradient(135deg, oklch(56.4% 0.046 257.417), oklch(44.6% 0.043 257.281));
 }
 .header-basic,
 .btn-basic {
