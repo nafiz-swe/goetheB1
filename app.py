@@ -1,14 +1,3 @@
-# from flask import Flask
-# app = Flask(__name__)
-
-# @app.route('/')
-# def home():
-#     return "Hello from EuroZoom!"
-
-# if __name__ == '__main__':
-#     app.run(host="0.0.0.0", debug=True)
-
-
 
 from flask import Flask, render_template, request, redirect, url_for, session, jsonify, make_response
 from selenium import webdriver
@@ -31,6 +20,7 @@ except Exception as e:
 app = Flask(__name__)
 app.secret_key = "f8a1d5b65cc9473d931b407ec8e8573b"
 
+
 TRIGGER_TEXTS = ["Select Modules", "Select modules", "select modules", "SELECT MODULES"]
 watching = {"b1": False, "b2": False, "kolkata_b1": False}
 trigger_audio = {"b1": False, "b2": False, "kolkata_b1": False}
@@ -40,6 +30,7 @@ TARGET_URLS = {
     "b2": "https://www.goethe.de/ins/bd/en/spr/prf/gzb2.cfm",
     "kolkata_b1": "https://www.goethe.de/ins/in/en/sta/kol/prf/gzb1.cfm"
 }
+
 
 ALARM_LIST = [
     ("1-Morning.mp3", "Morning"),
@@ -52,27 +43,15 @@ ALARM_LIST = [
     ("8-kgf.mp3", "KGF Theme")
 ]
 
+
 def get_db_connection():
     return mysql.connector.connect(
-        host="localhost",
-        user="root",
-        password="",
-        database="goethe_alarm_db"
+        host="46.250.238.67",
+        user="eurozoom",
+        password="EuroZoom@480", 
+        database="goethealarm"
     )
-# def get_db_connection():
-#     return mysql.connector.connect(
-#         host="46.250.238.67",
-#         user="eurozoom",
-#         password="EuroZoom@480", 
-#         database="goethealarm"
-#     )
-# def get_db_connection():
-#     return mysql.connector.connect(
-#         host="localhost",
-#         user="eurozoom",
-#         password="EuroZoom@480",
-#         database="goethealarm"
-#     )
+
 
 def get_device_id():
     device_id = request.cookies.get("device_id")
@@ -128,13 +107,16 @@ def check_condition_and_open(level):
 def home():
     return render_template('index.html')
 
+
 @app.route('/about')
 def about():
     return render_template('about.html')
 
+
 @app.route('/contact')
 def contact():
     return render_template('contact.html')
+
 
 @app.route('/admin/eurozoom', methods=['GET', 'POST'])
 def admin_create_user():
@@ -166,8 +148,6 @@ def admin_create_user():
         return render_template('admin/eurozoom.html', message=msg)
     
     return render_template('admin/eurozoom.html')
-
-
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -221,8 +201,6 @@ def login():
     return render_template('login.html')
 
 
-
-
 @app.route('/dashboard')
 def dashboard():
     if 'email' not in session:
@@ -242,11 +220,11 @@ def dashboard():
         user=user
     )
 
+
 @app.route('/logout')
 def logout():
     session.clear() 
     return redirect(url_for('home'))
-
 
 
 @app.route('/set-alarm', methods=['POST'])
@@ -255,7 +233,6 @@ def set_alarm():
     if selected_alarm:
         session['alarm_file'] = selected_alarm
     return redirect(url_for('dashboard'))
-
 
 
 @app.route('/start-watch/<level>') 
@@ -384,6 +361,7 @@ def start_watch(level):
 def alarm():
     alarm_file = session.get('alarm_file', '1-Morning.mp3')
     return render_template('alarm.html', alarm_file=alarm_file)
+
 
 @app.route('/check-audio/<level>')
 def check_audio(level):

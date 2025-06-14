@@ -1,3 +1,12 @@
+<div class="offer-bar">
+    <p>
+    Bangladesh Goethe B1/B2 এক্সাম রেজিস্ট্রেশন চলাকালীন আমাদের Monitoring Systems‑এ সর্বমোট ১৫টি ইউজার স্লট নির্ধারিত থাকে।
+      <!-- আর <strong>মাত্র ৬টি</strong> ইউজার স্লট বাকি আছে। -->
+      <!-- স্লট বুকিং এর জন্য সময় বাকি আছে | সময় বাকি: -->
+      স্লট বুকিং এর জন্য সময় বাকি আছে: <span id="offercountdown"></span>
+    </p>
+  </div>
+   
 <nav class="navbar">
     <div class="navbar-container container">
         <input type="checkbox" name="" id="">
@@ -24,3 +33,108 @@
         </h1>        
     </div>
 </nav>
+
+
+<script>
+    // ২০২৫ সালের ২১ জুন, রাত ১১:৩০ মিনিট
+    const targetDate = new Date(2025, 5, 21, 23, 30, 0); // জুন = 5 (0-based)
+  
+    // ইংরেজি সংখ্যা → বাংলা সংখ্যা রূপান্তর ফাংশন
+    function toBanglaNumber(number) {
+      const engToBan = { '0': '০', '1': '১', '2': '২', '3': '৩', '4': '৪', '5': '৫', '6': '৬', '7': '৭', '8': '৮', '9': '৯' };
+      return number.toString().split('').map(d => engToBan[d] || d).join('');
+    }
+  
+    function updateofferCountdown() {
+      const now = new Date();
+      const difference = targetDate - now;
+  
+      if (difference <= 0) {
+        document.getElementById('offercountdown').textContent = "সময় শেষ!";
+        return;
+      }
+  
+      const days = Math.floor(difference / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((difference / (1000 * 60 * 60)) % 24);
+      const minutes = Math.floor((difference / (1000 * 60)) % 60);
+      const seconds = Math.floor((difference / 1000) % 60);
+  
+      document.getElementById('offercountdown').textContent =
+        (days > 0 ? `${toBanglaNumber(days)} দিন ` : '') +
+        `${toBanglaNumber(hours)} ঘণ্টা ${toBanglaNumber(minutes)} মিনিট ${toBanglaNumber(seconds)} সেকেন্ড`;
+    }
+  
+    setInterval(updateofferCountdown, 1000);
+    updateofferCountdown();
+  </script>
+  
+
+  <script>
+    const navbar = document.querySelector('.navbar');
+    let lastScrollTop = 0;
+  
+    window.addEventListener('scroll', function () {
+      const scrollTop = window.scrollY || document.documentElement.scrollTop;
+  
+      if (scrollTop > 10) {
+        navbar.classList.add('fixed');
+      } else {
+        navbar.classList.remove('fixed');
+      }
+  
+      lastScrollTop = scrollTop;
+    });
+  </script>
+  
+<style>
+.offer-bar {
+    background: linear-gradient(90deg, #0077b6, #00a6f4);
+    color: #ffffff;
+    text-align: center;
+    padding: 15px;
+    font-size: 13px;
+    font-weight: 500;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+    z-index: 99;
+    margin: 0;
+    border-radius: 0;
+}
+
+.offer-bar p {
+    margin: 0;
+    line-height: 1.4;
+}
+
+/* .offer-bar strong {
+    color: #ffe600;
+} */
+
+#offercountdown {
+    font-family: monospace;
+    background-color:#ffe600;
+    padding: 6px 6px 4px;
+    border-radius: 4px;
+    display: inline-block;
+    font-weight: 600;
+    color: #000;
+    font-size: 12.5px;
+    margin-left: 4px;
+}
+
+/* Mobile Responsive */
+@media screen and (max-width: 768px) {
+    .offer-bar {
+        font-size: 12px;
+        padding: 15px;
+    }
+    .navbar.fixed {
+        top: -16px;
+    }
+
+    #offercountdown {
+        font-size: 12px;
+        padding: 2px 5px;
+    }
+}
+
+</style>
