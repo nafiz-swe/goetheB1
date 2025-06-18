@@ -7,10 +7,15 @@
     <link rel="icon" type="image/svg+xml" href="{{ url_for('static', filename='EuroZoom-Tab.svg') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <!-- Social Media Icon -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
+        <!-- Open Graph for Social Media Preview -->
+        <meta property="og:title" content="EuroZoom – গোয়েথ মনিটরিং">
+        <meta property="og:description" content="যখন ‘Select Modules’ ওপেন হবে, তখনই আপনার ল্যাপটপ বা কম্পিউটারে অ্যালার্ম বাজবে।">
+        <meta property="og:image" content="{{ url_for('static', filename='eurozoom-social.webp', _external=True) }}">
+        <meta property="og:url" content="https://eurozoom.net">
+        <meta property="og:type" content="website">
 </head>
 <body>
     {% include 'navbar.html' %}
