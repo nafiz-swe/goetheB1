@@ -296,10 +296,17 @@ def start_watch(level):
                     .back-button:hover {{
                         background-color: #45a049;
                     }}
+                    .monitor-gif {{
+                        display: block;
+                        margin: -37px auto -50px;
+                        max-width: 450px;
+                        height: 250px;
+                    }}
                 </style>
             </head>
             <body>
                 <div class="message-box">
+                    <img src="/static/eurozoom-monitor.gif" alt="Monitoring" class="monitor-gif" />
                     <h2>⚡ প্রস্তুত থাকুন! {normalized_level.upper()} জন্য মনিটরিং চালু হয়েছে।</h2>
                     <p class="monitoring-page">ভয়নেই! আপনি ল্যাপটপ বা কম্পিউটারে মনিটরিং চালু রেখেও অন্যান্য কাজ করতে পারবেন।</p>
                     <p style="text-align: justify; margin-top: 0;">
